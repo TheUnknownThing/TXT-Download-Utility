@@ -8,3 +8,5 @@ Because their is almost NO tool to download links from a txt file.
 Feel free to pull requests to the project.
 - Todo list:
 Add download speed display, add a custom control to display file information ...
+- License:
+GPL3.0
