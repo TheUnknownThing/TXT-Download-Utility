@@ -27,12 +27,23 @@ namespace Multi_Threading_Download
     /// </summary>
     public partial class MainWindow : Window
     {
+        private System.Threading.Timer aTimer;
         public MainWindow()
         {
             InitializeComponent();
+            SetTimer();
         }
         public string[] filename=null;
         public string foldPath=null;
+        private void SetTimer()
+        {
+            aTimer = new System.Threading.Timer(ChangeProgressBarEvent, null, Timeout.Infinite, Timeout.Infinite);
+        }
+        private void ChangeProgressBarEvent(Object state)
+        {
+            aTimer.Change(1000, Timeout.Infinite);
+            this.Dispatcher.BeginInvoke(new Action(() => this.DownloadPercentage.Value=tot), System.Windows.Threading.DispatcherPriority.Normal, null);
+        }
         int tot=0;
         private void TXTSelect_Click(object sender, RoutedEventArgs e)
         {
@@ -84,41 +95,90 @@ namespace Multi_Threading_Download
             }
             OutputLabel.Text += "\n" +"End";
             */
+            aTimer.Change(0, Timeout.Infinite);
+            StopDownload.IsEnabled = true;
+            TXTSelect.IsEnabled = false;
+            FolderSelect.IsEnabled = false;
             await AllocDownloadAsync();
         }
         private async Task AllocDownloadAsync()
         {
             if (filename.Length < 4)
             {
-                await StartDownloadAsync(0, filename.Length);
-                OutputLabel.Text += "\n" + "End";
+                OutputLabel2.Text = "Nothing to Download";
+                OutputLabel3.Text = "Nothing to Download";
+                OutputLabel4.Text = "Nothing to Download";
+                await StartDownloadAsync(0, filename.Length,1);
+                OutputLabel1.Text += "\n" + "End";
             }
             else
             {
-                var task1= StartDownloadAsync(0, filename.Length/4);
-                var task2 = StartDownloadAsync(filename.Length/4, filename.Length / 2);
-                var task3 = StartDownloadAsync(filename.Length / 2, 3*filename.Length / 4);
-                var task4 = StartDownloadAsync(3*filename.Length / 4, filename.Length);
+                var task1= StartDownloadAsync(0, filename.Length/4,1);
+                var task2 = StartDownloadAsync(filename.Length/4, filename.Length / 2,2);
+                var task3 = StartDownloadAsync(filename.Length / 2, 3*filename.Length / 4,3);
+                var task4 = StartDownloadAsync(3*filename.Length / 4, filename.Length,4);
                 await Task.WhenAll(task1, task2, task3, task4);
-                OutputLabel.Text += "\n" + "End";
+                System.Windows.MessageBox.Show("Download Process End");
             }
         }
-        private async Task StartDownloadAsync(int start,int end)
+        private async Task StartDownloadAsync(int start,int end,int tasknumber)
         {
             for (int i = start; i < end; i++)
             {
                 string[] saveUrl = filename[i].Split('/');
                 if (!File.Exists(foldPath + "\\" + saveUrl[saveUrl.Length - 1]))
                 {
-                    var TaskAsync = startDownloadAsync(filename[i], foldPath + "\\" + saveUrl[saveUrl.Length - 1], int.Parse(ThreadCountTextbox.Text), saveUrl[saveUrl.Length - 1]);
+                    var TaskAsync = startDownloadAsync(filename[i], foldPath + "\\" + saveUrl[saveUrl.Length - 1], int.Parse(ThreadCountTextbox.Text), saveUrl[saveUrl.Length - 1],tasknumber);
                     if (await TaskAsync)
                     {
+                        ModifyOutput(saveUrl[saveUrl.Length - 1],tasknumber,false);
                         continue;
                     }
                 }
             }
         }
-        private async Task<bool> startDownloadAsync(string URLName,string FoldPath,int ThreadCount,string FileName)
+        private void ModifyOutput(string labeltext,int tasknumber,bool isException)
+        {
+            if (!isException)
+            {
+                switch (tasknumber)
+                {
+                    case 1:
+                        OutputLabel1.Text += labeltext + "Success \n";
+                        break;
+                    case 2:
+                        OutputLabel2.Text += labeltext + "Success \n";
+                        break;
+                    case 3:
+                        OutputLabel3.Text += labeltext + "Success \n";
+                        break;
+                    case 4:
+                        OutputLabel4.Text += labeltext + "Success \n";
+                        break;
+                }
+                tot++;
+                //DownloadPercentage.Value += 1;
+            }
+            else if (isException)
+            {
+                switch (tasknumber)
+                {
+                    case 1:
+                        OutputLabel1.Text += labeltext + "Failed \n";
+                        break;
+                    case 2:
+                        OutputLabel2.Text += labeltext + "Failed \n";
+                        break;
+                    case 3:
+                        OutputLabel3.Text += labeltext + "Failed \n";
+                        break;
+                    case 4:
+                        OutputLabel4.Text += labeltext + "Failed \n";
+                        break;
+                }
+            }
+        }
+        private async Task<bool> startDownloadAsync(string URLName,string FoldPath,int ThreadCount,string FileName,int tasknumber)
         {
             var downloadOpt = new DownloadConfiguration()
             {
@@ -142,12 +202,23 @@ namespace Multi_Threading_Download
                 UserAgent = $"DownloaderSample/{Assembly.GetExecutingAssembly().GetName().Version.ToString(3)}"
             }
             };
-            var downloader = new DownloadService(downloadOpt);
-            await downloader.DownloadFileTaskAsync(URLName, FoldPath);
+            try
+            {
+                var downloader = new DownloadService(downloadOpt);
+                await downloader.DownloadFileTaskAsync(URLName, FoldPath);
+            }
+            catch (Exception ex)
+            {
+                ModifyOutput(URLName+" "+ex.ToString(),tasknumber,true);
+            }
             //OutputLabel.Text = tot.ToString();
             //DownloadPercentage.Value += 1;
-            //tot++;
             return true;
+        }
+
+        private void StopDownload_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

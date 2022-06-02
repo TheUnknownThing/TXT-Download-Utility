@@ -7,16 +7,17 @@
         ui:WindowHelper.UseModernWindowStyle="True"
         xmlns:local="clr-namespace:Multi_Threading_Download"
         mc:Ignorable="d"
-        Title="MainWindow" Height="315" Width="455.784">
+        Title="MainWindow" Height="329.459" Width="455.784">
     <Grid>
         <Label Content="Multi Threading Download" HorizontalAlignment="Left" Height="36" Margin="18,22,0,0" VerticalAlignment="Top" Width="249" FontSize="18"/>
-        <Label Content="Version 1.0" HorizontalAlignment="Left" Height="23" Margin="272,26,0,0" VerticalAlignment="Top" Width="80"/>
-        <WrapPanel Orientation="Horizontal" Margin="18,63,10.333,128.667">
+        <Label Content="Version 1.1" HorizontalAlignment="Left" Height="23" Margin="272,26,0,0" VerticalAlignment="Top" Width="80"/>
+        <WrapPanel Orientation="Horizontal" Margin="18,63,10.333,158">
             <Button x:Name="TXTSelect" Content="Select Download TXT" HorizontalAlignment="Left" Height="30" Margin="0,5,0,0" VerticalAlignment="Top" Width="164" Click="TXTSelect_Click"/>
             <Button x:Name="FolderSelect" Content="Select Download Folder" HorizontalAlignment="Left" Height="30" Margin="5,5,0,0" VerticalAlignment="Top" Width="179" Click="FolderSelect_Click"/>
             <Button x:Name="StartDownload" Content="Start" HorizontalAlignment="Left" Height="30" Margin="5,5,5,0" VerticalAlignment="Top" Width="55" Click="StartDownload_Click" IsEnabled="False"/>
             <Label Content="Thread Count:" Margin="0,10,0,6" Height="20"/>
             <TextBox x:Name="ThreadCountTextbox" Margin="3,10,0,6" Text="4" Height="18" Width="45" MinWidth="45"/>
+            <Button x:Name="StopDownload" Content="Stop" HorizontalAlignment="Left" Height="30" Margin="5,10,5,0" VerticalAlignment="Top" Width="55" Click="StopDownload_Click" IsEnabled="False" Background="#33EE0000"/>
         </WrapPanel>
         <ProgressBar x:Name="DownloadPercentage" HorizontalAlignment="Left" Height="7" Margin="21,147,0,0" VerticalAlignment="Top" Width="393"/>
         <WrapPanel Orientation="Horizontal" Margin="21,159,10.333,9.333">
