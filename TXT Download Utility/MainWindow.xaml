@@ -1,0 +1,31 @@
+﻿<Window x:Class="Multi_Threading_Download.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        xmlns:local="clr-namespace:Multi_Threading_Download"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="315" Width="455.784">
+    <Grid>
+        <Label Content="Multi Threading Download" HorizontalAlignment="Left" Height="36" Margin="18,22,0,0" VerticalAlignment="Top" Width="249" FontSize="18"/>
+        <Label Content="Version 1.0" HorizontalAlignment="Left" Height="23" Margin="272,26,0,0" VerticalAlignment="Top" Width="80"/>
+        <WrapPanel Orientation="Horizontal" Margin="18,63,10.333,128.667">
+            <Button x:Name="TXTSelect" Content="Select Download TXT" HorizontalAlignment="Left" Height="30" Margin="0,5,0,0" VerticalAlignment="Top" Width="164" Click="TXTSelect_Click"/>
+            <Button x:Name="FolderSelect" Content="Select Download Folder" HorizontalAlignment="Left" Height="30" Margin="5,5,0,0" VerticalAlignment="Top" Width="179" Click="FolderSelect_Click"/>
+            <Button x:Name="StartDownload" Content="Start" HorizontalAlignment="Left" Height="30" Margin="5,5,5,0" VerticalAlignment="Top" Width="55" Click="StartDownload_Click" IsEnabled="False"/>
+            <Label Content="Thread Count:" Margin="0,10,0,6" Height="20"/>
+            <TextBox x:Name="ThreadCountTextbox" Margin="3,10,0,6" Text="4" Height="18" Width="45" MinWidth="45"/>
+        </WrapPanel>
+        <ProgressBar x:Name="DownloadPercentage" HorizontalAlignment="Left" Height="7" Margin="21,147,0,0" VerticalAlignment="Top" Width="393"/>
+        <WrapPanel Orientation="Horizontal" Margin="21,159,10.333,9.333">
+            <Label Content="Output" HorizontalAlignment="Left" Height="24" Margin="0,0,0,0" VerticalAlignment="Top" Width="53"/>
+            <Rectangle Width="400" Height="5"/>
+            <TextBox x:Name="OutputLabel1" Text="" HorizontalAlignment="Left" Height="85" Margin="0,0,0,0" VerticalAlignment="Top" Width="100" VerticalScrollBarVisibility="Visible" IsReadOnly="True"/>
+            <TextBox x:Name="OutputLabel2" Text="" HorizontalAlignment="Left" Height="85" Margin="5,0,0,0" VerticalAlignment="Top" Width="100" VerticalScrollBarVisibility="Visible" IsReadOnly="True"/>
+            <TextBox x:Name="OutputLabel3" Text="" HorizontalAlignment="Left" Height="85" Margin="5,0,0,0" VerticalAlignment="Top" Width="100" VerticalScrollBarVisibility="Visible" IsReadOnly="True"/>
+            <TextBox x:Name="OutputLabel4" Text="" HorizontalAlignment="Left" Height="85" Margin="5,0,0,0" VerticalAlignment="Top" Width="100" VerticalScrollBarVisibility="Visible" IsReadOnly="True"/>
+        </WrapPanel>
+    </Grid>
+</Window>
